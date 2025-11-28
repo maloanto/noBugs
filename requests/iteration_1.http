@@ -10,7 +10,7 @@ Content-Type: application/json
 
 
 ### Positive test: Admin can create new user with correct data
-### user tokem: Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+### user token: Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
 POST http://localhost:4111/api/v1/admin/users
 Content-Type: application/json
 Authorization: Basic YWRtaW46YWRtaW4=

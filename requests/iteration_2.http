@@ -1,0 +1,411 @@
+### get auth token
+### admin token: Authorization: Basic YWRtaW46YWRtaW4=
+POST http://localhost:4111/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin"
+}
+
+
+### create user
+POST http://localhost:4111/api/v1/admin/users
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "username":"kate3001",
+  "password":"Kate3000$",
+  "role": "USER"
+}
+
+
+### create accaunt
+POST http://localhost:4111/api/v1/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+### Deposit
+
+### Positive test: user can top up their account by 0.01
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": 0.01
+}
+
+### Positive test: account must be replenished by 0.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+### Positive test: user can top up their account by 5000
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": 5000
+}
+
+### Positive test: account must be replenished by 5000.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Positive test: user can top up their account by 2000
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": 2000
+}
+
+
+### Positive test: account must be replenished by 7000.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user can't top up their account by -0.01
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": -0.01
+}
+
+### Positive test: account must be replenished by 7000.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user can't top up their account by 0
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": 0
+}
+
+
+### Positive test: account must be replenished by 7000.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user can't top up their account by 5001
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": 5001
+}
+
+### Positive test: account must be replenished by 7000.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot top up a non-existent account
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 4,
+  "balance": 100
+}
+
+
+### Positive test: account must be replenished by 7000.01
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+### Positive test: user can top up their account by 5000
+POST http://localhost:4111/api/v1/accounts/deposit
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "id": 2,
+  "balance": 5000
+}
+
+
+### Transfer
+### create 2 user
+POST http://localhost:4111/api/v1/admin/users
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "username":"kate3002",
+  "password":"Kate3000$",
+  "role": "USER"
+}
+
+
+### Positive test: user can transfer 0.01
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 3,
+  "amount": 0.01
+}
+
+
+### Positive test: account must be replenished by 12000
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Positive test: user can transfer 0.01
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 3,
+  "amount": 0.01
+}
+
+### Positive test: user can transfer 10000
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 3,
+  "amount": 10000
+}
+
+
+### Positive test: account must be replenished by 2000
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot transfer more than 10,000
+### Пополнить баланс счета на 10000
+
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 3,
+  "amount": 10001
+}
+
+
+### Positive test: account must be replenished by 12000
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Positive test: user can transfer 2000 to their account
+
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 1,
+  "amount": 2000
+}
+
+
+### Positive test: account 1 has a balance of 2000, and account 2 has a balance of 10000
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+
+### Negative test: user cannot top up an account that does not exist
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 13,
+  "amount": 5
+}
+
+### Positive test: account must be replenished by 10000
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot transfer a negative amount
+POST http://localhost:4111/api/v1/accounts/transfer
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "senderAccountId": 2,
+  "receiverAccountId": 13,
+  "amount": -1
+}
+
+### Positive test: account must be replenished by 10000
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Update name
+### Positive test: user can change the name with valid data
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "John Potter"
+}
+
+### Positive test: checking the changed name
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Positive test: user can change their name to a single-letter name and surname
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "J P"
+}
+
+
+### Positive test: checking the changed name
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+
+### Positive test: user can change their name to a long name and surname
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "Jfsdffdsfdsfsdfsdf Passdfsdfsdfdsfds"
+}
+
+
+### Positive test: checking the changed name
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot change their name to a single-word name
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "Jonni"
+}
+
+### Positive test: name has not changed
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot change their name to a single name
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "JonniSmith"
+}
+
+
+### Positive test: name has not changed
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot change their name to a name containing Russian characters
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "Антон Малов"
+}
+
+### Positive test: name has not changed
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot change their name to a name containing numbers
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "Jonn Smit123"
+}
+
+### Positive test: name has not changed
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+### Negative test: user cannot change the name to a name containing special characters
+PUT http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+{
+  "name": "Jonn@ Smit"
+}
+
+### Positive test: name has not changed
+GET http://localhost:4111/api/v1/customer/profile
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
