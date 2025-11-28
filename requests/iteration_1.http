@@ -1,0 +1,34 @@
+### get auth token
+### admin token: Authorization: Basic YWRtaW46YWRtaW4=
+POST http://localhost:4111/api/v1/auth/login
+Content-Type: application/json
+
+{
+   "username": "admin",
+   "password": "admin"
+}
+
+
+### Positive test: Admin can create new user with correct data
+### user tokem: Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+POST http://localhost:4111/api/v1/admin/users
+Content-Type: application/json
+Authorization: Basic YWRtaW46YWRtaW4=
+
+{
+  "username":"kate3000",
+  "password":"Kate3000$",
+  "role": "USER"
+}
+
+### create accaunt
+POST http://localhost:4111/api/v1/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
+
+
+
+### get account
+GET http://localhost:4111/api/v1/customer/accounts
+Content-Type: application/json
+Authorization: Basic a2F0ZTMwMDA6S2F0ZTMwMDAk
